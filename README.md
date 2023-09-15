@@ -14,3 +14,7 @@ I thought of this idea to learn Go, but now I want to expand it a little, just t
 ## C Version
 
 You can **check the specific `README.md`** inside the `c/` folder. You can find a few `.c` and `.h` and build script for Snake. Just execute the script and run `c/snake` once complete!
+
+Here is an Asciinema Demo of the C version:
+
+<a href="https://asciinema.org/a/608243" target="_blank"><img src="https://asciinema.org/a/608243.svg" /></a>

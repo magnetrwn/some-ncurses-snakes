@@ -64,3 +64,7 @@ short snake_is_stuck(const vec2_t max_xy, snake_t *snake);
 // free() everything
 void clear_snake(snake_t *snake);
 ```
+
+Asciinema Demo:
+
+<a href="https://asciinema.org/a/608243" target="_blank"><img src="https://asciinema.org/a/608243.svg" /></a>
