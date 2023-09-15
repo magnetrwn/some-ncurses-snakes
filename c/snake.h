@@ -2,7 +2,6 @@
 #define SNAKE_H_
 
 #include <stdlib.h>
-#include <curses.h>
 #include <ncurses.h>
 
 typedef enum _direct4 {
@@ -10,7 +9,7 @@ typedef enum _direct4 {
 } direct4_t;
 
 typedef struct _vec2 {
-    size_t x, y;
+    long x, y;
 } vec2_t;
 
 typedef struct _snake_rot_llist {
@@ -29,8 +28,8 @@ typedef struct _snake {
 
 // TODO: remember to check which functions to inline
 snake_t *snake_init(size_t length, vec2_t head, direct4_t direction);
-void snake_draw(WINDOW *win, snake_t *snake);
-void snake_step(snake_t *snake);
+void snake_draw(WINDOW *win, const vec2_t max_xy, snake_t *snake);
+void snake_step(const vec2_t max_xy, snake_t *snake);
 void snake_rotate(snake_t *snake, direct4_t direction);
 direct4_t snake_get_rot_from(snake_t *snake, vec2_t position);
 void clear_snake(snake_t *snake);
