@@ -100,6 +100,38 @@ direct4_t snake_get_rot_from(snake_t *snake, vec2_t position) {
     return NONE;
 }
 
+short snake_is_stuck(const vec2_t max_xy, snake_t *snake) {
+    vec2_t checking = snake->head;
+    direct4_t curr_rot = snake->direction;
+
+    for (size_t i = 0; i < snake->length; i++) {
+        if (checking.x < 1)
+            checking.x = max_xy.x;
+        else if (checking.x > max_xy.x)
+            checking.x = 1;
+        else if (checking.y < 1)
+            checking.y = max_xy.y;
+        else if (checking.y > max_xy.y)
+            checking.y = 1;
+
+        if (snake_get_rot_from(snake, checking) != NONE)
+            curr_rot = snake_get_rot_from(snake, checking);
+
+        switch (curr_rot) {
+            case UP: checking.y++; break;
+            case DOWN: checking.y--; break;
+            case LEFT: checking.x++; break;
+            case RIGHT: checking.x--; break;
+            default: break;
+        }
+
+        if (snake->head.y == checking.y && snake->head.x == checking.x)
+            return TRUE;
+    }
+
+    return FALSE;
+}
+
 void clear_snake(snake_t *snake) {
     snake_rot_llist_t *rot_ptr = snake->rots;
     while (rot_ptr != NULL) {
@@ -108,83 +140,4 @@ void clear_snake(snake_t *snake) {
         free(tmp);
     }
     free(snake);
-}
-
-/* ----------------------------------------------------------------------- */
-
-vec2_t init_ncurses(void) {
-    initscr();
-    cbreak();
-    noecho();
-    curs_set(FALSE);
-    keypad(stdscr, TRUE);
-    start_color();
-    init_pair(1, COLOR_GREEN, COLOR_BLACK);
-    init_pair(2, COLOR_RED, COLOR_BLACK);
-
-    vec2_t screen_size;
-    getmaxyx(stdscr, screen_size.y, screen_size.x);
-    return screen_size;
-}
-
-/*size_t draw_all_rot_points(WINDOW *win, snake_t *snake) {
-    size_t sz = 0;
-    snake_rot_llist_t *rot_ptr = snake->rots;
-    while (rot_ptr != NULL) {
-        mvwprintw(win, rot_ptr->position.y, rot_ptr->position.x, "+");
-        rot_ptr = rot_ptr->next;
-        sz++;
-    }
-    return sz;
-}*/
-
-/* ----------------------------------------------------------------------- */
-
-#define SNAKE_STARTING_LENGTH 200
-#define FRAME_DELAY 133
-
-int main(void) {
-    vec2_t screen_size = init_ncurses();
-    WINDOW *game_window = newwin(screen_size.y, screen_size.x, 0, 0);
-    wtimeout(game_window, FRAME_DELAY);
-
-    vec2_t screen_center = {screen_size.x/2, screen_size.y/2};
-    vec2_t screen_max = {screen_size.x - 2, screen_size.y - 2};
-    snake_t *snake = snake_init(SNAKE_STARTING_LENGTH, screen_center, RIGHT);
-
-    int ch = 'd';
-    do {
-        ch = wgetch(game_window);
-        switch (ch) {
-            case 'w':
-                snake_rotate(snake, UP);
-                break;
-            case 's':
-                snake_rotate(snake, DOWN);
-                break;
-            case 'a':
-                snake_rotate(snake, LEFT);
-                break;
-            case 'd':
-                snake_rotate(snake, RIGHT);
-                break;
-        }
-
-        wclear(game_window);
-        wattron(game_window, COLOR_PAIR(1));
-        snake_step(screen_max, snake);
-        snake_draw(game_window, screen_max, snake);
-        wattroff(game_window, COLOR_PAIR(1));
-        wattron(game_window, COLOR_PAIR(2));
-        box(game_window, 0, 0);
-        mvwprintw(game_window, 1, 1, "Score: %lu", (snake->length - SNAKE_STARTING_LENGTH) * 1000 / FRAME_DELAY);
-        wattroff(game_window, COLOR_PAIR(2));
-        wrefresh(game_window);
-
-    } while (ch != 'q' && ch != KEY_EXIT);
-
-    delwin(game_window);
-    endwin();
-    clear_snake(snake);
-    return 0;
 }

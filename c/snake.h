@@ -32,6 +32,7 @@ void snake_draw(WINDOW *win, const vec2_t max_xy, snake_t *snake);
 void snake_step(const vec2_t max_xy, snake_t *snake);
 void snake_rotate(snake_t *snake, direct4_t direction);
 direct4_t snake_get_rot_from(snake_t *snake, vec2_t position);
+short snake_is_stuck(const vec2_t max_xy, snake_t *snake);
 void clear_snake(snake_t *snake);
 
 #endif // SNAKE_H_
