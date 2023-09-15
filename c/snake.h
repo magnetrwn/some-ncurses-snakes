@@ -26,7 +26,7 @@ typedef struct _snake {
     snake_rot_llist_t *rots;
 } snake_t;
 
-// TODO: remember to check which functions to inline
+// TODO: remember to check which functions to inline and which parameters to make const
 snake_t *snake_init(size_t length, vec2_t head, direct4_t direction);
 void snake_draw(WINDOW *win, const vec2_t max_xy, snake_t *snake);
 void snake_step(const vec2_t max_xy, snake_t *snake);
