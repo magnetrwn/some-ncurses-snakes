@@ -4,6 +4,6 @@ set -e
 clang -Wall \
       -Wextra \
       -Wpedantic \
-      -O3 \
+      -O1 \
       -lncurses \
       -o snake snake.c
