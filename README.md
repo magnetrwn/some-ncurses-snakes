@@ -1,0 +1,1 @@
+margolus-cpp X snake? Make critters automata become actual prey?

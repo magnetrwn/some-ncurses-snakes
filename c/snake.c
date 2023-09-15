@@ -27,13 +27,13 @@ snake_t *snake_init(size_t length, vec2_t head, direct4_t direction) {
 
 void snake_draw(WINDOW *win, snake_t *snake) {
     vec2_t draw_cursor = snake->head;
-    direct4_t curr_direct = snake->direction;
+    direct4_t curr_rot = snake->direction;
     for (size_t i = 0; i < snake->length; i++) {
         mvwprintw(win, draw_cursor.y, draw_cursor.x, "@");
-        direct4_t this_pos_rot = snake_get_rot(snake, draw_cursor);
-        if (this_pos_rot != NONE)
-            curr_direct = this_pos_rot;
-        switch (curr_direct) {
+
+        if (snake_get_rot_from(snake, draw_cursor) != NONE)
+            curr_rot = snake_get_rot_from(snake, draw_cursor);
+        switch (curr_rot) {
             case UP:
                 draw_cursor.y++;
                 break;
@@ -84,13 +84,15 @@ void snake_step(snake_t *snake) {
 }
 
 void snake_rotate(snake_t *snake, direct4_t direction) {
-    snake->direction = direction;
     snake_rot_llist_t *rot_ptr = snake->rots;
     snake_rot_llist_t *new_rot = malloc(sizeof(snake_rot_llist_t));
     new_rot->position = snake->head;
-    new_rot->direction = direction;
+    new_rot->rot_to = direction;
+    new_rot->rot_from = snake->direction;
     new_rot->lifetime = snake->length;
     new_rot->next = NULL;
+
+    snake->direction = direction;
 
     if (rot_ptr == NULL)
         snake->rots = new_rot;
@@ -101,11 +103,11 @@ void snake_rotate(snake_t *snake, direct4_t direction) {
     }
 }
 
-direct4_t snake_get_rot(snake_t *snake, vec2_t position) {
+direct4_t snake_get_rot_from(snake_t *snake, vec2_t position) {
     snake_rot_llist_t *rot_ptr = snake->rots;
     while (rot_ptr != NULL) {
         if (rot_ptr->position.x == position.x && rot_ptr->position.y == position.y)
-            return rot_ptr->direction;
+            return rot_ptr->rot_from;
         rot_ptr = rot_ptr->next;
     }
     return NONE;
