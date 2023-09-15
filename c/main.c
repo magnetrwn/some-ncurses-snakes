@@ -16,6 +16,7 @@ vec2_t init_ncurses(void) {
     start_color();
     init_pair(1, COLOR_GREEN, COLOR_BLACK);
     init_pair(2, COLOR_RED, COLOR_BLACK);
+    init_pair(3, COLOR_RED, COLOR_WHITE);
 
     vec2_t screen_size;
     getmaxyx(stdscr, screen_size.y, screen_size.x);
@@ -41,6 +42,8 @@ int main(void) {
     vec2_t screen_center = {screen_size.x/2, screen_size.y/2};
     vec2_t screen_max = {screen_size.x - 2, screen_size.y - 2};
     snake_t *snake = snake_init(SNAKE_STARTING_LENGTH, screen_center, RIGHT);
+
+    size_t score = 0;
 
     vec2_t food[FOOD_COUNT];
     for (size_t i = 0; i < FOOD_COUNT; i++) {
@@ -68,13 +71,15 @@ int main(void) {
         }
 
         wclear(game_window);
-        mvwprintw(game_window, 1, 1, "Score: %lu", (snake->length - SNAKE_STARTING_LENGTH) * 1000 / FRAME_DELAY);
+        score = (snake->length - SNAKE_STARTING_LENGTH) * 1000 / FRAME_DELAY;
+        mvwprintw(game_window, 1, 1, "Score: %lu", score);
         wattron(game_window, COLOR_PAIR(1));
         snake_step(screen_max, snake);
         snake_draw(game_window, screen_max, snake);
         wattroff(game_window, COLOR_PAIR(1));
         wattron(game_window, COLOR_PAIR(2));
         box(game_window, 0, 0);
+
         for (size_t i = 0; i < FOOD_COUNT; i++) {
             if (snake->head.x == food[i].x && snake->head.y == food[i].y) {
                 snake->length++;
@@ -87,9 +92,13 @@ int main(void) {
         wrefresh(game_window);
 
         if (snake_is_stuck(screen_max, snake)) {
-            mvwprintw(game_window, screen_center.y, screen_center.x - 4, "GAME OVER");
+            wattron(game_window, COLOR_PAIR(3));
+            // TODO: make this a little nicer
+            mvwprintw(game_window, screen_center.y, screen_center.x - 6, "  GAME OVER  ");
+            mvwprintw(game_window, screen_center.y + 1, screen_center.x - 6, "  %lu points   ", score);
             wrefresh(game_window);
             napms(2000);
+            wattroff(game_window, COLOR_PAIR(2));
             break;
         }
 

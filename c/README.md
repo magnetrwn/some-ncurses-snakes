@@ -57,6 +57,10 @@ void snake_rotate(snake_t *snake, direct4_t direction);
 // this is used to draw the snake starting from the head backwards
 direct4_t snake_get_rot_from(snake_t *snake, vec2_t position);
 
+// Checks if the head has collided with the snake with the same
+// algorithm as the snake_draw() function
+short snake_is_stuck(const vec2_t max_xy, snake_t *snake);
+
 // free() everything
 void clear_snake(snake_t *snake);
 ```
