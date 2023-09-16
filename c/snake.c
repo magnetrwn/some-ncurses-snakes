@@ -1,6 +1,6 @@
 #include "snake.h"
 
-snake_t *snake_init(size_t length, vec2_t head, direct4_t direction) {
+snake_t *snake_init(const size_t length, const vec2_t head, const direct4_t direction) {
     snake_t *snake = malloc(sizeof(snake_t));
     snake->length = length;
     snake->head = head;
@@ -70,7 +70,7 @@ void snake_step(const vec2_t max_xy, snake_t *snake) {
     }
 }
 
-void snake_rotate(snake_t *snake, direct4_t direction) {
+void snake_rotate(snake_t *snake, const direct4_t direction) {
     snake_rot_llist_t *rot_ptr = snake->rots;
     snake_rot_llist_t *new_rot = malloc(sizeof(snake_rot_llist_t));
     new_rot->position = snake->head;
@@ -90,7 +90,7 @@ void snake_rotate(snake_t *snake, direct4_t direction) {
     }
 }
 
-void snake_lengthen(snake_t *snake, size_t amount) {
+void snake_lengthen(snake_t *snake, const size_t amount) {
     snake->length += amount;
     snake_rot_llist_t *rot_ptr = snake->rots;
     while (rot_ptr != NULL) {
@@ -99,7 +99,7 @@ void snake_lengthen(snake_t *snake, size_t amount) {
     }
 }
 
-direct4_t snake_get_rot_from(snake_t *snake, vec2_t position) {
+direct4_t snake_get_rot_from(snake_t *snake, const vec2_t position) {
     snake_rot_llist_t *rot_ptr = snake->rots;
     while (rot_ptr != NULL) {
         if (rot_ptr->position.x == position.x && rot_ptr->position.y == position.y)
