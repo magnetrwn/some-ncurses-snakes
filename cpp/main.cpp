@@ -1,6 +1,3 @@
-#include <ncurses.h>
-#include <deque>
-
 #include "snake.hpp"
 
 int main() {

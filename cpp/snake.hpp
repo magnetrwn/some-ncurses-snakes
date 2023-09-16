@@ -4,6 +4,7 @@
 #include <ncurses.h>
 #include <algorithm>
 #include <deque>
+#include <memory>
 
 enum class Direction {
     NONE, RIGHT, UP, LEFT, DOWN
@@ -40,12 +41,14 @@ public:
 
 class SnakeGame {
 protected:
-    const Vec2 window_size;
+    Vec2 window_size;
+    Vec2 window_center;
+    Vec2 window_max;
     WINDOW *window;
-    Snake snake;
+    std::unique_ptr<Snake> snake;
 
 public:
-    SnakeGame();
+    SnakeGame(const size_t initial_length = 5, const size_t pellets_amount = 20);
     virtual ~SnakeGame();
 
     void step();

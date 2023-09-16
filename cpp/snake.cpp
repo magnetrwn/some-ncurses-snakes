@@ -2,6 +2,8 @@
 #include <algorithm>
 #include <stdbool.h>
 
+/* Snake */
+
 Snake::Snake(const size_t length, const Vec2 head, const Direction direction)
     : head(head), direction(direction), length(length) {}
 
@@ -118,4 +120,25 @@ bool Snake::is_stuck(const Vec2 max_xy) const {
     }
 
     return false;
+}
+
+/* SnakeGame */
+
+SnakeGame::SnakeGame(const size_t initial_length, const size_t pellets_amount)
+    : window(nullptr) {
+    initscr();
+    cbreak();
+    noecho();
+    curs_set(FALSE);
+    keypad(stdscr, TRUE);
+    start_color();
+    init_pair(1, COLOR_GREEN, COLOR_BLACK);
+    init_pair(2, COLOR_RED, COLOR_BLACK);
+    init_pair(3, COLOR_RED, COLOR_WHITE);
+
+    getmaxyx(stdscr, window_size.y, window_size.x);
+    window_center = {window_size.x / 2, window_size.y / 2};
+    window_max = {window_size.x - 2, window_size.y - 2};
+
+    snake = std::make_unique<Snake>(Snake(initial_length, window_center, Direction::RIGHT));
 }
