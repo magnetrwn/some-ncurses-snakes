@@ -19,11 +19,13 @@ void snake_draw(WINDOW *win, const vec2_t max_xy, snake_t *snake) {
             draw_cursor.x = max_xy.x;
         else if (draw_cursor.x > max_xy.x)
             draw_cursor.x = 1;
-        else if (draw_cursor.y < 1)
+
+        if (draw_cursor.y < 1)
             draw_cursor.y = max_xy.y;
         else if (draw_cursor.y > max_xy.y)
             draw_cursor.y = 1;
 
+        // TODO: use mvwaddch() instead of mvwprintw()
         mvwprintw(win, draw_cursor.y, draw_cursor.x, "@");
 
         if (snake_get_rot_from(snake, draw_cursor) != NONE)
@@ -52,7 +54,8 @@ void snake_step(const vec2_t max_xy, snake_t *snake) {
         snake->head.x = max_xy.x;
     else if (snake->head.x > max_xy.x)
         snake->head.x = 1;
-    else if (snake->head.y < 1)
+
+    if (snake->head.y < 1)
         snake->head.y = max_xy.y;
     else if (snake->head.y > max_xy.y)
         snake->head.y = 1;
@@ -118,7 +121,8 @@ short snake_is_stuck(const vec2_t max_xy, snake_t *snake) {
             checking.x = max_xy.x;
         else if (checking.x > max_xy.x)
             checking.x = 1;
-        else if (checking.y < 1)
+
+        if (checking.y < 1)
             checking.y = max_xy.y;
         else if (checking.y > max_xy.y)
             checking.y = 1;
