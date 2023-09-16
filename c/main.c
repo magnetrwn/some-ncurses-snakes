@@ -73,8 +73,8 @@ int main(void) {
         }
 
         wclear(game_window);
-        score = (snake->length - SNAKE_STARTING_LENGTH) * 1000 / FRAME_DELAY;
-        mvwprintw(game_window, 1, 1, "Score: %lu", score);
+        score = (snake->length - SNAKE_STARTING_LENGTH);
+        mvwprintw(game_window, 1, 1, " Score: %lu", score);
         wattron(game_window, COLOR_PAIR(1));
         snake_step(screen_max, snake);
         snake_draw(game_window, screen_max, snake);
