@@ -10,7 +10,7 @@ enum class Direction {
     NONE, RIGHT, UP, LEFT, DOWN
 };
 
-struct Vec2 { // TODO: maybe replace with std::pair?
+struct Vec2 {
     long x, y;
 };
 
@@ -36,6 +36,10 @@ public:
     void lengthen(const size_t amount);
 
     bool is_stuck(const Vec2 max_xy) const;
+
+    Vec2 get_head() const;
+    size_t get_length() const;
+
     void draw(WINDOW *window, const Vec2 max_xy) const;
 };
 
@@ -45,7 +49,13 @@ protected:
     Vec2 window_center;
     Vec2 window_max;
     WINDOW *window;
+
     std::unique_ptr<Snake> snake;
+    std::unique_ptr<Vec2[]> pellets;
+
+    bool snake_alive;
+    const size_t initial_length;
+    const size_t pellets_amount;
 
 public:
     SnakeGame(const size_t initial_length = 5, const size_t pellets_amount = 20);

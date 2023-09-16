@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <ncurses.h>
+#include <time.h>
 
 #include "snake.h"
 
@@ -45,6 +46,7 @@ int main(void) {
 
     size_t score = 0;
 
+    srand(time(NULL));
     vec2_t food[FOOD_COUNT];
     for (size_t i = 0; i < FOOD_COUNT; i++) {
         food[i].x = rand() % screen_max.x + 1;
