@@ -82,7 +82,7 @@ int main(void) {
 
         for (size_t i = 0; i < FOOD_COUNT; i++) {
             if (snake->head.x == food[i].x && snake->head.y == food[i].y) {
-                snake->length++;
+                snake_lengthen(snake, 1);
                 food[i].x = rand() % screen_max.x + 1;
                 food[i].y = rand() % screen_max.y + 1;
             }

@@ -90,6 +90,15 @@ void snake_rotate(snake_t *snake, direct4_t direction) {
     }
 }
 
+void snake_lengthen(snake_t *snake, size_t amount) {
+    snake->length += amount;
+    snake_rot_llist_t *rot_ptr = snake->rots;
+    while (rot_ptr != NULL) {
+        rot_ptr->lifetime += amount;
+        rot_ptr = rot_ptr->next;
+    }
+}
+
 direct4_t snake_get_rot_from(snake_t *snake, vec2_t position) {
     snake_rot_llist_t *rot_ptr = snake->rots;
     while (rot_ptr != NULL) {

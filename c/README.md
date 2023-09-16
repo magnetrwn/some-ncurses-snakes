@@ -1,10 +1,5 @@
 # C Version Documentation
 
-## Bugs
-
-+ On already existing rotations, increasing snake length by eating food makes the tail turn prematurely, causing multiple nodes to warp at the same time. Mostly noticeable when near to borders or when quickly eating pellets.
-+ When holding W, A, S or D, there is no frame delay, as it is determined by `wtimeout()` for the main loop call to `wgetch()`. There is a TODO about that as well.
-
 ## Implementation
 
 The C version of Snake uses the following data structures:
