@@ -206,6 +206,7 @@ void SnakeGame::step() {
         }
         mvwprintw(window, pellets[i].y, pellets[i].x, "%c", rand() % 10 + '0');
     }
+    wattroff(window, COLOR_PAIR(2));
 
     if (snake->is_stuck(window_max)) {
         wattron(window, COLOR_PAIR(3));
