@@ -63,4 +63,4 @@ if (!rotations.empty())
 
 This is based on the erase-remove idiom of C++, and is used in the source to decrement all lifetimes by 1 and delete completed rotations.
 
-I haven't really created a good scoring system for either the C/C++ version, but it's not really that necessary for this project: the C++ version just counts the length increments.
+The C++ version is just an overhaul of the C version to make it easier to understand at first glance, and with RAII and abstracted memory practices.

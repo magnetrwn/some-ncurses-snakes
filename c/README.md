@@ -54,10 +54,9 @@ void snake_step(const vec2_t max_xy, snake_t *snake);
 // on the head's coordinates
 void snake_rotate(snake_t *snake, direct4_t direction);
 
-// Check if the linked list of rotations has a match for the
-// position coordinates, and find the starting direction;
-// this is used to draw the snake starting from the head backwards
-direct4_t snake_get_rot_from(snake_t *snake, vec2_t position);
+// Returns pointer to the first rotation found at position,
+// or NULL if none.
+snake_rot_llist_t *snake_get_first_rot(snake_t *snake, const vec2_t position);
 
 // Checks if the head has collided with the snake with the same
 // algorithm as the snake_draw() function
