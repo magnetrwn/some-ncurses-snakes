@@ -28,8 +28,11 @@ void snake_draw(WINDOW *win, const vec2_t max_xy, snake_t *snake) {
         // TODO: use mvwaddch() instead of mvwprintw()
         mvwprintw(win, draw_cursor.y, draw_cursor.x, "@");
 
-        if (snake_get_rot_from(snake, draw_cursor) != NONE)
-            curr_rot = snake_get_rot_from(snake, draw_cursor);
+        snake_rot_llist_t *rotation = snake_get_first_rot(snake, draw_cursor);
+
+        if (rotation != NULL)
+            if (rotation->rot_from != NONE)
+                curr_rot = rotation->rot_from;
 
         switch (curr_rot) {
             case UP: draw_cursor.y++; break;
@@ -102,14 +105,14 @@ void snake_lengthen(snake_t *snake, const size_t amount) {
     }
 }
 
-direct4_t snake_get_rot_from(snake_t *snake, const vec2_t position) {
+snake_rot_llist_t *snake_get_first_rot(snake_t *snake, const vec2_t position) {
     snake_rot_llist_t *rot_ptr = snake->rots;
     while (rot_ptr != NULL) {
         if (rot_ptr->position.x == position.x && rot_ptr->position.y == position.y)
-            return rot_ptr->rot_from;
+            return rot_ptr;
         rot_ptr = rot_ptr->next;
     }
-    return NONE;
+    return NULL;
 }
 
 short snake_is_stuck(const vec2_t max_xy, snake_t *snake) {
@@ -127,8 +130,14 @@ short snake_is_stuck(const vec2_t max_xy, snake_t *snake) {
         else if (checking.y > max_xy.y)
             checking.y = 1;
 
-        if (snake_get_rot_from(snake, checking) != NONE)
-            curr_rot = snake_get_rot_from(snake, checking);
+        snake_rot_llist_t *rotation = snake_get_first_rot(snake, checking);
+
+        if (rotation != NULL)
+            if (rotation->rot_from != NONE) {
+                if (rotation->lifetime != snake->length - i)
+                    return TRUE;
+                curr_rot = rotation->rot_from;
+            }
 
         switch (curr_rot) {
             case UP: checking.y++; break;

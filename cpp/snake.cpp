@@ -1,4 +1,5 @@
 #include "snake.hpp"
+#include <algorithm>
 
 /* Snake */
 
@@ -114,12 +115,14 @@ bool Snake::is_stuck(const Vec2 max_xy) const {
         else if (cursor.y > max_xy.y)
             cursor.y = 1;
 
-        auto it = std::find_if(rotations.begin(), rotations.end(), [&cursor] (const SnakeRotation& rotation) {
-            return rotation.position.x == cursor.x && rotation.position.y == cursor.y;
-        });
-
-        if (it != rotations.end())
-            cursor_direction = it->rot_from;
+        for (const SnakeRotation& rotation : rotations) {
+            if (rotation.position.x == cursor.x && rotation.position.y == cursor.y && rotation.rot_from != Direction::NONE) {
+                if (rotation.lifetime != this->length - i)
+                    return true;
+                cursor_direction = rotation.rot_from;
+                break;
+            }
+        }
 
         switch (cursor_direction) {
             case Direction::RIGHT: cursor.x--; break;
